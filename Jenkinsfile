@@ -2,7 +2,7 @@ pipeline {
 agent any
 stages {
 stage('pulling from git') {
-steps { 	        git branch: 'main', url: 'https://github.com/Sywarr-awadhi/test_informatique.git'
+steps { 	        git branch: 'Master', url: 'https://github.com/Sywarr-awadhi/test_informatique.git'
 }
 }
 stage("Build") {
