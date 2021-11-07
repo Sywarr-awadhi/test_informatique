@@ -14,7 +14,8 @@ import tn.esprit.spring.services.IEmployeService;
 public class IControllerEmployeImpl  {
 	@Autowired
 	IEmployeService iemployeservice;
-	//JIHEN
+	
+//JIHEN
 	public int ajouterContrat(ContratDTO contrat) {
 		Contrat persitentcontrat=new Contrat(contrat.getDateDebutDto(), contrat.getTypeContratDto(), contrat.getSalaireDto(),contrat.getEmployeDto());
 		iemployeservice.ajouterContrat(persitentcontrat);
