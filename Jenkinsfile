@@ -30,5 +30,22 @@ stage("Build") {
           steps {
        bat "mvn deploy"
 			}}
-		}
+
+
+
+		
+stage('Docker'){
+	   steps {
+		dir("DevopsProject") {
+			bat "docker build -t dev ."
+			bat "docker tag dev  1401199897/devops:1"
+			bat"docker login -u 1401199897 -p dockersiwar98"
+			bat "docker push  1401199897/devops:1"			
+			
+			
+        }
+        
+    }}
+}
+
 	}
