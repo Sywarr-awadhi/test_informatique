@@ -68,11 +68,11 @@ stage ('Remove unused docker imager'){
 
          success {
          mail bcc: '', body: '''success Jenkins pipline .
-             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build succed', to: 'mohamed.chouchane@esprit.tn'
+             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build succed', to: 'siwar.awadhi1@esprit.tn'
          }
          failure {
              mail bcc: '', body: '''failed Jenkins pipline .
-             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build failed', to: 'mohamed.chouchane@esprit.tn'
+             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build failed', to: 'siwar.awadhi1@esprit.tn'
          }
              always {
             cleanWs()
