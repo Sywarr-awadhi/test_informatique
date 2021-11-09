@@ -1,4 +1,9 @@
 pipeline {
+ environment {
+ registry = "1401199897/devops"
+ registryCredential = '1401199897'
+ dockerImage = ''
+}
 agent any
 stages {
 stage('pulling from git') {
@@ -36,16 +41,40 @@ stage("Build") {
 		
 stage('Docker'){
 	   steps {
-		dir("DevopsProject") {
-			bat "docker build -t dev ."
-			bat "docker tag dev  1401199897/devops:1"
-			bat"docker login -u 1401199897 -p dockersiwar98"
-			bat "docker push  1401199897/devops:1"			
+		dir("Building our image") {
+			dockerImage = docker.build registry + ":$BUILD_NUMBER" 			
 			
 			
         }
         
     }}
+stage('Deploy our image') { 
+
+            steps { 
+
+                script { 
+
+                    docker.withRegistry( 'dockerhub', registryCredential ) { 
+
+                        dockerImage.push() 
+
+                    }
+
+                } 
+
+            }
+
+        } 
+    stage('Cleaning up') { 
+
+            steps { 
+
+                bat "docker rmi $registry:$BUILD_NUMBER" 
+
+            }
+
+        } 
 }
+
 
 	}
