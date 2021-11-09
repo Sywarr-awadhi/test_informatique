@@ -1,7 +1,7 @@
 pipeline {
  environment {
  registry = "1401199897/devops"
- registryCredential = 'DockerCredentials'
+ registryCredential = 'dockerhub'
  dockerImage = ''
 }
 agent any
@@ -39,25 +39,43 @@ stage("Build") {
 
 
 		
-stage('Docker : Build image') {
+stage('Build image with Docker') {
 steps {
    dir("test_informatique"){
 script {
-   dockerImage = docker.build registry}}}}
-stage('Docker : Push image') {
+   dockerImage = docker.build registry + ":$BUILD_NUMBER"}}}}
+stage('Push image with Docker') {
 steps {
    dir("test_informatique"){
 script {
 docker.withRegistry( '', registryCredential ) {
-   dockerImage.push()}}}}}
+ bat "docker push $registry:$BUILD_NUMBER"
+
+
+}}}}}
+
+stage ('Remove unused docker imager'){
+    steps {
+        bat "docker rmi $registry:$BUILD_NUMBER"
+    }
 }
-post {
-        success {
-    emailext attachLog: true, body: '''End of Pipeline
-Finished: SUCCESS''', subject: '#Success', to: 'siwar.awadhi1@esprit.tn'}
-    failure  {
-    emailext attachLog: true, body: '''End of Pipeline
-Finished: FAILURE''', subject: '#Failure', to: 'siwar.awadhi1@esprit.tn'}
-    } 
-	
-} 
+    }
+
+
+
+      post {
+
+         success {
+         mail bcc: '', body: '''success Jenkins pipline .
+             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build succed', to: 'mohamed.chouchane@esprit.tn'
+         }
+         failure {
+             mail bcc: '', body: '''failed Jenkins pipline .
+             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build failed', to: 'mohamed.chouchane@esprit.tn'
+         }
+             always {
+            cleanWs()
+        }
+      }
+
+}
