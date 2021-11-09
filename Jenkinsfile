@@ -1,7 +1,7 @@
 pipeline {
  environment {
  registry = "1401199897/devops"
- registryCredential = 'DockerCredentials'
+ registryCredential = 'dockerHub'
  dockerImage = ''
 }
 agent any
@@ -52,14 +52,11 @@ docker.withRegistry( '', registryCredential ) {
    dockerImage.push()}}}}}
 }
 post {
-failure {
-emailext attachLog: true, body: '''There was an error that prevented a Build Success ! 
-Do check the attached log or the console output for further details. 
-Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Failure on Pipeline'
-    }
-success {
-emailext body: '''Congrats for the successful build! 
-Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Success on Pipeline'
-    }
-}
-}
+        success {
+    emailext attachLog: true, body: '''End of Pipeline
+Finished: SUCCESS''', subject: '#Success', to: 'siwar.awadhi1@esprit.tn'}
+    failure  {
+    emailext attachLog: true, body: '''End of Pipeline
+Finished: FAILURE''', subject: '#Failure', to: 'siwar.awadhi1@esprit.tn'}
+    } 
+} 
