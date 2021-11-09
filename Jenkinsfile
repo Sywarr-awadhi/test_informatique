@@ -1,7 +1,7 @@
 pipeline {
  environment {
  registry = "1401199897/devops"
- registryCredential = '1401199897'
+ registryCredential = 'DockerCredentials'
  dockerImage = ''
 }
 agent any
@@ -39,42 +39,27 @@ stage("Build") {
 
 
 		
-stage('Docker'){
-	   steps {
-		dir("Building our image") {
-			dockerImage = docker.build registry + ":$BUILD_NUMBER" 			
-			
-			
-        }
-        
-    }}
-stage('Deploy our image') { 
-
-            steps { 
-
-                script { 
-
-                    docker.withRegistry( 'dockerhub', registryCredential ) { 
-
-                        dockerImage.push() 
-
-                    }
-
-                } 
-
-            }
-
-        } 
-    stage('Cleaning up') { 
-
-            steps { 
-
-                bat "docker rmi $registry:$BUILD_NUMBER" 
-
-            }
-
-        } 
+stage('Docker : Build image') {
+steps {
+   dir("test_informatique"){
+script {
+   dockerImage = docker.build registry}}}}
+stage('Docker : Push image') {
+steps {
+   dir("TimesheetProject"){
+script {
+docker.withRegistry( '', registryCredential ) {
+   dockerImage.push()}}}}}
 }
-
-
-	}
+post {
+failure {
+emailext attachLog: true, body: '''There was an error that prevented a Build Success ! 
+Do check the attached log or the console output for further details. 
+Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Failure on Pipeline'
+    }
+success {
+emailext body: '''Congrats for the successful build! 
+Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Success on Pipeline'
+    }
+}
+}
