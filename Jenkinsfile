@@ -1,7 +1,7 @@
 pipeline {
  environment {
  registry = "1401199897/devops"
- registryCredential = 'dockerHub'
+ registryCredential = 'DockerCredentials'
  dockerImage = ''
 }
 agent any
@@ -46,7 +46,7 @@ script {
    dockerImage = docker.build registry}}}}
 stage('Docker : Push image') {
 steps {
-   dir("TimesheetProject"){
+   dir("test_informatique"){
 script {
 docker.withRegistry( '', registryCredential ) {
    dockerImage.push()}}}}}
@@ -59,4 +59,5 @@ Finished: SUCCESS''', subject: '#Success', to: 'siwar.awadhi1@esprit.tn'}
     emailext attachLog: true, body: '''End of Pipeline
 Finished: FAILURE''', subject: '#Failure', to: 'siwar.awadhi1@esprit.tn'}
     } 
+	
 } 
