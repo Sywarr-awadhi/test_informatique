@@ -1,9 +1,10 @@
 pipeline {
  environment {
  registry = "1401199897/devops"
- registryCredential = 'dockerhub'
+ registryCredential = '1401199897'
  dockerImage = ''
 }
+
 agent any
 stages {
 stage('pulling from git') {
