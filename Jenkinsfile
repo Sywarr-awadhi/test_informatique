@@ -63,20 +63,10 @@ stage ('Remove unused docker imager'){
     }
 
 
-
-      post {
-
-         success {
-         mail bcc: '', body: '''success Jenkins pipline .
-             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build succed', to: 'siwar.awadhi1@esprit.tn'
-         }
-         failure {
-             mail bcc: '', body: '''failed Jenkins pipline .
-             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build failed', to: 'siwar.awadhi1@esprit.tn'
-         }
-             always {
-            cleanWs()
+stage("Email"){
+            steps{
+                emailext attachLog: true, body: "${env.BUILD_URL} has result ${currentBuild.result}", compressLog: true, subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'siwar.awadhi1@esprit.tn'
+            }
         }
-      }
 
 }
