@@ -3,6 +3,7 @@ pipeline {
  registry = "1401199897/devops"
  dockerHub = '1401199897'
  dockerImage = ''
+ 
 }
 
 agent any
