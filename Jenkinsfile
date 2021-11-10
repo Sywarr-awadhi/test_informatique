@@ -61,7 +61,7 @@ stage ('Remove unused docker imager'){
         bat "docker rmi $registry:$BUILD_NUMBER"
     }
 }
-    }
+    
 
 
 stage("Email"){
@@ -69,5 +69,6 @@ stage("Email"){
                 emailext attachLog: true, body: "${env.BUILD_URL} has result ${currentBuild.result}", compressLog: true, subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'siwar.awadhi1@esprit.tn'
             }
         }
+		}
 
 }
