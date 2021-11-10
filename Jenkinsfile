@@ -45,7 +45,7 @@ stage('Build image with Docker') {
 steps {
    
 script {
-   dockerImage = docker.build registry + ":$BUILD_NUMBER"}}}}
+   dockerImage = docker.build registry + ":$BUILD_NUMBER"}}}
 stage('Push image with Docker') {
 steps {
   
@@ -61,8 +61,6 @@ stage ('Remove unused docker imager'){
         bat "docker rmi $registry:$BUILD_NUMBER"
     }
 }
-    
-
 
 stage("Email"){
             steps{
@@ -70,5 +68,6 @@ stage("Email"){
             }
         }
 		}
+
 
 }
