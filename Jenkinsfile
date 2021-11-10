@@ -1,11 +1,10 @@
 pipeline {
  environment {
- dockerImage = ''
- registry = '1401199897/devops'
+ registry = '1401199897/timesheet'
  registryCredential = 'dockerhub_id'
+ dockerImage = '' }
  
- 
-}
+
 
 agent any
 stages {
@@ -38,35 +37,28 @@ stage("Build") {
           steps {
        bat "mvn deploy"
 			}}
-
-
-
-		
+			}
   stage('Docker : Build image') {
 steps {
-   
+   dir("TimesheetProject"){
 script {
-   dockerImage = docker.build registry}}}
+   dockerImage = docker.build registry}}}}
 stage('Docker : Push image') {
 steps {
-   
+   dir("TimesheetProject"){
 script {
 docker.withRegistry( '', registryCredential ) {
-   dockerImage.push()}}}}
+   dockerImage.push()}}}}}
 }
-      post {
-
-         success {
-         mail bcc: '', body: '''success Jenkins pipline .
-             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build succed', to: 'siwar.awadhi1@esprit.tn'
-         }
-         failure {
-             mail bcc: '', body: '''failed Jenkins pipline .
-             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build failed', to: 'siwar.awadhi1@esprit.tn'
-         }
-             always {
-            cleanWs()
-        }
-      }
-
+  post {
+failure {
+emailext attachLog: true, body: '''There was an error that prevented a Build Success ! 
+Do check the attached log or the console output for further details. 
+Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Failure on Pipeline'
+    }
+success {
+emailext body: '''Congrats for the successful build! 
+Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Success on Pipeline'
+    }
+}
 }
