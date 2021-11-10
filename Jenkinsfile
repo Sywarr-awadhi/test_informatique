@@ -62,4 +62,3 @@ Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Success on Pipelin
     }
 }
 }
-{AQAAABAAAAAQwltCPqs1d08siNxKXcIPr5Rruh+fs8JPUNMco3gJ+vI=}
