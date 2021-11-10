@@ -1,7 +1,7 @@
 pipeline {
  environment {
  registry = '1401199897/timesheet'
- registryCredential = 'dockerhub_id'
+ registryCredential = '1401199897'
  dockerImage = '' }
  
 
@@ -62,3 +62,4 @@ Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Success on Pipelin
     }
 }
 }
+{AQAAABAAAAAQwltCPqs1d08siNxKXcIPr5Rruh+fs8JPUNMco3gJ+vI=}
