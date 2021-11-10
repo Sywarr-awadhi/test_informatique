@@ -52,13 +52,14 @@ docker.withRegistry( '', registryCredential ) {
 }
   post {
 failure {
-emailext attachLog: true, body: '''There was an error that prevented a Build Success ! 
-Do check the attached log or the console output for further details. 
-Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Failure on Pipeline'
+emailext body: 'failure',
+    subject: 'Test Pipeline',
+    to: 'awadhi.sywar1@gmail.com'
     }
 success {
-emailext body: '''Congrats for the successful build! 
-Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Success on Pipeline'
+emailext body: 'all things worked success',
+    subject: 'Test Pipeline',
+    to: 'awadhi.sywar1@gmail.com'
     }
 }
 }
