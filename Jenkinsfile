@@ -1,8 +1,9 @@
 pipeline {
  environment {
- registry = "1401199897/devops"
- registryCredential = 'dockerhub_id'
  dockerImage = ''
+ registry = '1401199897/devops'
+ registryCredential = 'dockerhub_id'
+ 
  
 }
 
@@ -43,15 +44,15 @@ stage("Build") {
 		
   stage('Docker : Build image') {
 steps {
-   dir("TimesheetProject"){
+   
 script {
-   dockerImage = docker.build registry}}}}
+   dockerImage = docker.build registry}}}
 stage('Docker : Push image') {
 steps {
-   dir("TimesheetProject"){
+   
 script {
 docker.withRegistry( '', registryCredential ) {
-   dockerImage.push()}}}}}
+   dockerImage.push()}}}}
 }
       post {
 
