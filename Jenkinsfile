@@ -1,7 +1,7 @@
 pipeline {
  environment {
  registry = "1401199897/devops"
- registryCredential = '1401199897'
+ dockerHub = '1401199897'
  dockerImage = ''
 }
 
@@ -69,4 +69,5 @@ stage("Email"){
             }
         }
 
+}
 }
