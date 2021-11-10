@@ -43,18 +43,18 @@ stage("Build") {
 		
 stage('Build image with Docker') {
 steps {
-   dir("test_informatique"){
+   
 script {
    dockerImage = docker.build registry + ":$BUILD_NUMBER"}}}}
 stage('Push image with Docker') {
 steps {
-   dir("test_informatique"){
+  
 script {
 docker.withRegistry( '', registryCredential ) {
  bat "docker push $registry:$BUILD_NUMBER"
 
 
-}}}}}
+}}}}
 
 stage ('Remove unused docker imager'){
     steps {
