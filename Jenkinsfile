@@ -1,7 +1,7 @@
 pipeline {
  environment {
  registry = "1401199897/devops"
- registryCredential = 'dockerHub'
+ registryCredential = 'dockerhub_id'
  dockerImage = ''
  
 }
@@ -41,27 +41,31 @@ stage("Build") {
 
 
 		
-stage('Build image with Docker') {
+  stage('Docker : Build image') {
 steps {
-   dir("test_informatique"){
+   dir("TimesheetProject"){
 script {
    dockerImage = docker.build registry}}}}
-stage('Push image with Docker') {
+stage('Docker : Push image') {
 steps {
-   dir("test_informatique"){
+   dir("TimesheetProject"){
 script {
 docker.withRegistry( '', registryCredential ) {
    dockerImage.push()}}}}}
 }
-      
-    
-    post {
-        success {
-    emailext attachLog: true, body: '''End of Pipeline
-Finished: SUCCESS''', subject: '#Success', to: 'siwar.awadhi1@esprit.tn'}
-    failure  {
-    emailext attachLog: true, body: '''End of Pipeline
-Finished: FAILURE''', subject: '#Failure', to: 'siwar.awadhi1@esprit.tn'}
-    } 
-  
+      post {
+
+         success {
+         mail bcc: '', body: '''success Jenkins pipline .
+             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build succed', to: 'siwar.awadhi1@esprit.tn'
+         }
+         failure {
+             mail bcc: '', body: '''failed Jenkins pipline .
+             Jenkins.''', cc: '', from: '', replyTo: '', subject: 'Build failed', to: 'siwar.awadhi1@esprit.tn'
+         }
+             always {
+            cleanWs()
+        }
+      }
+
 }
