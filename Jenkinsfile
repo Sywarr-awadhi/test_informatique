@@ -1,7 +1,7 @@
 pipeline {
  environment {
  registry = "1401199897/devops"
- dockerHub = '1401199897'
+ registryCredential = 'dockerHub'
  dockerImage = ''
  
 }
@@ -43,31 +43,25 @@ stage("Build") {
 		
 stage('Build image with Docker') {
 steps {
-   
+   dir("test_informatique"){
 script {
-   dockerImage = docker.build registry + ":$BUILD_NUMBER"}}}
+   dockerImage = docker.build registry}}}}
 stage('Push image with Docker') {
 steps {
-  
+   dir("test_informatique"){
 script {
 docker.withRegistry( '', registryCredential ) {
- bat "docker push $registry:$BUILD_NUMBER"
-
-
-}}}}
-
-stage ('Remove unused docker imager'){
-    steps {
-        bat "docker rmi $registry:$BUILD_NUMBER"
-    }
+   dockerImage.push()}}}}}
 }
-
-stage("Email"){
-            steps{
-                emailext attachLog: true, body: "${env.BUILD_URL} has result ${currentBuild.result}", compressLog: true, subject: "Status of pipeline: ${currentBuild.fullDisplayName}", to: 'siwar.awadhi1@esprit.tn'
-            }
-        }
-		}
-
-
+      
+    
+    post {
+        success {
+    emailext attachLog: true, body: '''End of Pipeline
+Finished: SUCCESS''', subject: '#Success', to: 'siwar.awadhi1@esprit.tn'}
+    failure  {
+    emailext attachLog: true, body: '''End of Pipeline
+Finished: FAILURE''', subject: '#Failure', to: 'siwar.awadhi1@esprit.tn'}
+    } 
+  
 }
