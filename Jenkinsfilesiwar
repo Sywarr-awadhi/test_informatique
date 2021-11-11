@@ -12,6 +12,7 @@ stage('pulling from git') {
 steps { 	        git branch: 'main', url: 'https://github.com/Sywarr-awadhi/test_informatique.git'
 }
 }
+
 stage("Build") {
        steps {
        
