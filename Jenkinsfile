@@ -36,6 +36,7 @@ stage("Build") {
       stage("DEPLOY with Nexus") {
           steps {
        bat "mvn deploy"
+	   mail bcc: '', body: 'Test success', cc: '', from: '', replyTo: '', subject: 'test Timesheet', to: 'awadhi.sywar1@gmail.com'
 			}}
 			
   stage('Docker : Build image') {
@@ -51,7 +52,7 @@ docker.withRegistry( '', registryCredential ) {
    dockerImage.push()}}}}
 }
 
-mail bcc: '', body: 'Test success', cc: '', from: '', replyTo: '', subject: 'test Timesheet', to: 'awadhi.sywar1@gmail.com'
+
 
     }
 
