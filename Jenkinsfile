@@ -48,18 +48,7 @@ steps {
    
 script {
 docker.withRegistry( '', registryCredential ) {
-   dockerImage.push()}}}}
+   dockerImage.push()}}}
+   mail bcc: '', body: 'Test success', cc: '', from: '', replyTo: '', subject: 'test Timesheet', to: 'awadhi.sywar1@gmail.com'}
 }
-  post {
-failure {
-emailext body: 'failure',
-    subject: 'Test Pipeline',
-    to: 'awadhi.sywar1@gmail.com'
-    }
-success {
-emailext body: 'all things worked success',
-    subject: 'Test Pipeline',
-    to: 'awadhi.sywar1@gmail.com'
-    }
-}
-}
+  }
