@@ -48,7 +48,11 @@ steps {
    
 script {
 docker.withRegistry( '', registryCredential ) {
-   dockerImage.push()}}}
-   mail bcc: '', body: 'Test success', cc: '', from: '', replyTo: '', subject: 'test Timesheet', to: 'awadhi.sywar1@gmail.com'}
+   dockerImage.push()}}}}
 }
-  }
+stage('pulling from git') {
+ steps {
+mail bcc: '', body: 'Test success', cc: '', from: '', replyTo: '', subject: 'test Timesheet', to: 'awadhi.sywar1@gmail.com'
+}}
+    }
+
