@@ -24,7 +24,6 @@ stage("Build") {
        bat "mvn test"
              }}
     
-	
 	  stage("test statique") {
        steps{
 		bat "mvn clean verify sonar:sonar -Dsonar.projectKey=timesheet -Dsonar.host.url=http://localhost:9000 -Dsonar.login=8af1af23dc5d142d684ea96aaa8c7d1b5e22c580"		
@@ -42,6 +41,7 @@ stage("Build") {
 			
   stage('Docker : Build image') {
 steps {
+   
 script {
    dockerImage = docker.build registry}}}
 stage('Docker : Push image') {
@@ -51,8 +51,15 @@ script {
 docker.withRegistry( '', registryCredential ) {
    dockerImage.push()}}}}
 }
-
-
-
+  post {
+failure {
+emailext attachLog: true, body: '''There was an error that prevented a Build Success ! 
+Do check the attached log or the console output for further details. 
+Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Failure on Pipeline'
     }
-
+success {
+emailext body: '''Congrats for the successful build! 
+Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Success on Pipeline'
+    }
+}
+}
