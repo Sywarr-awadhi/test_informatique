@@ -51,8 +51,15 @@ script {
 docker.withRegistry( '', registryCredential ) {
    dockerImage.push()}}}}
 }
-
-
-
+  post {
+failure {
+emailext attachLog: true, body: '''There was an error that prevented a Build Success ! 
+Do check the attached log or the console output for further details. 
+Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Failure on Pipeline'
     }
-
+success {
+emailext body: '''Congrats for the successful build! 
+Jenkins Team ''', to: '$DEFAULT_RECIPIENTS' , subject: 'Build Success on Pipeline'
+    }
+}
+}
